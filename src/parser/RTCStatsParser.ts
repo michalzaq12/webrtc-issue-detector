@@ -31,7 +31,7 @@ interface WebRTCStatsParserParams {
 class RTCStatsParser implements StatsParser {
   private readonly prevStats = new Map<string, PrevStatsItem | undefined>();
 
-  private readonly allowedReportTypes: Set<RTCStatsType> = new Set<RTCStatsType>([
+  private readonly allowedReportTypes = new Set<RTCStatsType | 'track'>([
     'candidate-pair',
     'inbound-rtp',
     'outbound-rtp',
