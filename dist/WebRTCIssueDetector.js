@@ -20,17 +20,18 @@ import createLogger from './utils/logger';
 import MissingStreamDataDetector from './detectors/MissingStreamDataDetector';
 class WebRTCIssueDetector {
     constructor(params) {
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         _WebRTCIssueDetector_running.set(this, false);
         this.detectors = [];
-        this.logger = params.logger ?? createLogger();
-        this.eventEmitter = params.issueEmitter ?? new WebRTCIssueEmitter();
+        this.logger = (_a = params.logger) !== null && _a !== void 0 ? _a : createLogger();
+        this.eventEmitter = (_b = params.issueEmitter) !== null && _b !== void 0 ? _b : new WebRTCIssueEmitter();
         if (params.onIssues) {
             this.eventEmitter.on(EventType.Issue, params.onIssues);
         }
         if (params.onNetworkScoresUpdated) {
             this.eventEmitter.on(EventType.NetworkScoresUpdated, params.onNetworkScoresUpdated);
         }
-        this.detectors = params.detectors ?? [
+        this.detectors = (_c = params.detectors) !== null && _c !== void 0 ? _c : [
             new QualityLimitationsIssueDetector(),
             new InboundNetworkIssueDetector(),
             new OutboundNetworkIssueDetector(),
@@ -41,19 +42,19 @@ class WebRTCIssueDetector {
             new VideoDecoderIssueDetector(),
             new MissingStreamDataDetector(),
         ];
-        this.networkScoresCalculator = params.networkScoresCalculator ?? new DefaultNetworkScoresCalculator();
-        this.compositeStatsParser = params.compositeStatsParser ?? new CompositeRTCStatsParser({
+        this.networkScoresCalculator = (_d = params.networkScoresCalculator) !== null && _d !== void 0 ? _d : new DefaultNetworkScoresCalculator();
+        this.compositeStatsParser = (_e = params.compositeStatsParser) !== null && _e !== void 0 ? _e : new CompositeRTCStatsParser({
             statsParser: new RTCStatsParser({
                 ignoreSSRCList: params.ignoreSSRCList,
                 logger: this.logger,
             }),
         });
-        this.statsReporter = params.statsReporter ?? new PeriodicWebRTCStatsReporter({
+        this.statsReporter = (_f = params.statsReporter) !== null && _f !== void 0 ? _f : new PeriodicWebRTCStatsReporter({
             compositeStatsParser: this.compositeStatsParser,
-            getStatsInterval: params.getStatsInterval ?? 5000,
+            getStatsInterval: (_g = params.getStatsInterval) !== null && _g !== void 0 ? _g : 5000,
         });
         window.wid = this;
-        this.autoAddPeerConnections = params.autoAddPeerConnections ?? true;
+        this.autoAddPeerConnections = (_h = params.autoAddPeerConnections) !== null && _h !== void 0 ? _h : true;
         if (this.autoAddPeerConnections) {
             this.wrapRTCPeerConnection();
         }

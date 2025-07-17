@@ -1,10 +1,11 @@
 import { EventEmitter } from 'events';
 class PeriodicWebRTCStatsReporter extends EventEmitter {
     constructor(params) {
+        var _a;
         super();
         this.isStopped = false;
         this.compositeStatsParser = params.compositeStatsParser;
-        this.getStatsInterval = params.getStatsInterval ?? 10000;
+        this.getStatsInterval = (_a = params.getStatsInterval) !== null && _a !== void 0 ? _a : 10000;
     }
     get isRunning() {
         return !!this.reportTimer && !this.isStopped;

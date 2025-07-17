@@ -28,12 +28,13 @@ class UnknownVideoDecoderImplementationDetector extends BaseIssueDetector {
         });
     }
     processData(data) {
+        var _a;
         const issues = [];
         const { id: connectionId } = data.connection;
-        const previousInboundRTPVideoStreamsStats = this.getLastProcessedStats(connectionId)?.video.inbound;
+        const previousInboundRTPVideoStreamsStats = (_a = this.getLastProcessedStats(connectionId)) === null || _a === void 0 ? void 0 : _a.video.inbound;
         data.video.inbound.forEach((streamStats) => {
             const { decoderImplementation: currentDecoder, ssrc } = streamStats;
-            const prevStats = previousInboundRTPVideoStreamsStats?.find((item) => item.ssrc === ssrc);
+            const prevStats = previousInboundRTPVideoStreamsStats === null || previousInboundRTPVideoStreamsStats === void 0 ? void 0 : previousInboundRTPVideoStreamsStats.find((item) => item.ssrc === ssrc);
             // skipping the first iteration on purpose
             if (!prevStats) {
                 return;
@@ -60,7 +61,8 @@ class UnknownVideoDecoderImplementationDetector extends BaseIssueDetector {
         return issues;
     }
     setLastDecoderWithIssue(connectionId, ssrc, decoder) {
-        const issues = __classPrivateFieldGet(this, _UnknownVideoDecoderImplementationDetector_lastDecoderWithIssue, "f")[connectionId] ?? {};
+        var _a;
+        const issues = (_a = __classPrivateFieldGet(this, _UnknownVideoDecoderImplementationDetector_lastDecoderWithIssue, "f")[connectionId]) !== null && _a !== void 0 ? _a : {};
         if (decoder === undefined) {
             delete issues[ssrc];
         }

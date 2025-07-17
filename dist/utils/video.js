@@ -5,8 +5,8 @@ export const isSvcSpatialLayerChanged = (ssrc, allProcessedStats) => {
             continue;
         }
         const prevVideoStreamStats = allProcessedStats[i - 1].video.inbound.find((stream) => stream.ssrc === ssrc);
-        const widthChanged = videoStreamStats.frameWidth !== prevVideoStreamStats?.frameWidth;
-        const heightChanged = videoStreamStats.frameHeight !== prevVideoStreamStats?.frameHeight;
+        const widthChanged = videoStreamStats.frameWidth !== (prevVideoStreamStats === null || prevVideoStreamStats === void 0 ? void 0 : prevVideoStreamStats.frameWidth);
+        const heightChanged = videoStreamStats.frameHeight !== (prevVideoStreamStats === null || prevVideoStreamStats === void 0 ? void 0 : prevVideoStreamStats.frameHeight);
         if (widthChanged || heightChanged) {
             return true;
         }

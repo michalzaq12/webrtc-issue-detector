@@ -3,6 +3,7 @@ import { scheduleTask } from '../utils/tasks';
 import { CLEANUP_PREV_STATS_TTL_MS } from '../utils/constants';
 class RTCStatsParser {
     constructor(params) {
+        var _a;
         this.prevStats = new Map();
         this.allowedReportTypes = new Set([
             'candidate-pair',
@@ -13,7 +14,7 @@ class RTCStatsParser {
             'track',
             'transport',
         ]);
-        this.ignoreSSRCList = params.ignoreSSRCList ?? [];
+        this.ignoreSSRCList = (_a = params.ignoreSSRCList) !== null && _a !== void 0 ? _a : [];
         this.logger = params.logger;
     }
     get previouslyParsedStatsConnectionsIds() {
@@ -30,8 +31,8 @@ class RTCStatsParser {
         const { pc, id } = info;
         try {
             const beforeGetStats = Date.now();
-            const recieversWithActiveTracks = pc.getReceivers().filter((r) => r.track?.enabled);
-            const sendersWithActiveTracks = pc.getSenders().filter((s) => s.track?.enabled);
+            const recieversWithActiveTracks = pc.getReceivers().filter((r) => { var _a; return (_a = r.track) === null || _a === void 0 ? void 0 : _a.enabled; });
+            const sendersWithActiveTracks = pc.getSenders().filter((s) => { var _a; return (_a = s.track) === null || _a === void 0 ? void 0 : _a.enabled; });
             const receiversStats = await Promise.all(recieversWithActiveTracks.map((r) => r.getStats()));
             const sendersStats = await Promise.all(sendersWithActiveTracks.map((r) => r.getStats()));
             const stats = this.mapReportsStats([...receiversStats, ...sendersStats], info);

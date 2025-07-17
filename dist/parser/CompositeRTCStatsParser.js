@@ -8,8 +8,9 @@ class CompositeRTCStatsParser {
         return [...this.connections];
     }
     addPeerConnection(payload) {
+        var _a;
         this.connections.push({
-            id: payload.id ?? String(Date.now() + Math.random().toString(32)),
+            id: (_a = payload.id) !== null && _a !== void 0 ? _a : String(Date.now() + Math.random().toString(32)),
             pc: payload.pc,
         });
     }

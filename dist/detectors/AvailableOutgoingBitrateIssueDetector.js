@@ -14,9 +14,10 @@ import { IssueReason, IssueType, } from '../types';
 import BaseIssueDetector from './BaseIssueDetector';
 class AvailableOutgoingBitrateIssueDetector extends BaseIssueDetector {
     constructor(params = {}) {
+        var _a;
         super(params);
         _AvailableOutgoingBitrateIssueDetector_availableOutgoingBitrateThreshold.set(this, void 0);
-        __classPrivateFieldSet(this, _AvailableOutgoingBitrateIssueDetector_availableOutgoingBitrateThreshold, params.availableOutgoingBitrateThreshold ?? 100000, "f"); // 100 KBit/s
+        __classPrivateFieldSet(this, _AvailableOutgoingBitrateIssueDetector_availableOutgoingBitrateThreshold, (_a = params.availableOutgoingBitrateThreshold) !== null && _a !== void 0 ? _a : 100000, "f"); // 100 KBit/s
     }
     performDetection(data) {
         const issues = [];

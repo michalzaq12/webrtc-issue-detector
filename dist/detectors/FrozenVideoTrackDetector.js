@@ -16,13 +16,14 @@ import { isSvcSpatialLayerChanged } from '../utils/video';
 import BaseIssueDetector from './BaseIssueDetector';
 class FrozenVideoTrackDetector extends BaseIssueDetector {
     constructor(params = {}) {
+        var _a, _b, _c;
         super();
         _FrozenVideoTrackDetector_avgFreezeDurationThresholdMs.set(this, void 0);
         _FrozenVideoTrackDetector_frozenDurationThresholdPct.set(this, void 0);
         _FrozenVideoTrackDetector_minMosQuality.set(this, void 0);
-        __classPrivateFieldSet(this, _FrozenVideoTrackDetector_avgFreezeDurationThresholdMs, params.avgFreezeDurationThresholdMs ?? 1000, "f");
-        __classPrivateFieldSet(this, _FrozenVideoTrackDetector_frozenDurationThresholdPct, params.frozenDurationThresholdPct ?? 30, "f");
-        __classPrivateFieldSet(this, _FrozenVideoTrackDetector_minMosQuality, params.minMosQuality ?? MosQuality.BAD, "f");
+        __classPrivateFieldSet(this, _FrozenVideoTrackDetector_avgFreezeDurationThresholdMs, (_a = params.avgFreezeDurationThresholdMs) !== null && _a !== void 0 ? _a : 1000, "f");
+        __classPrivateFieldSet(this, _FrozenVideoTrackDetector_frozenDurationThresholdPct, (_b = params.frozenDurationThresholdPct) !== null && _b !== void 0 ? _b : 30, "f");
+        __classPrivateFieldSet(this, _FrozenVideoTrackDetector_minMosQuality, (_c = params.minMosQuality) !== null && _c !== void 0 ? _c : MosQuality.BAD, "f");
     }
     performDetection(data) {
         const inboundScore = data.networkScores.inbound;
@@ -41,6 +42,7 @@ class FrozenVideoTrackDetector extends BaseIssueDetector {
         }
         const frozenStreams = data.video.inbound
             .map((videoStream) => {
+            var _a, _b;
             const prevStat = allLastProcessedStats[allLastProcessedStats.length - 1]
                 .video.inbound.find((stream) => stream.ssrc === videoStream.ssrc);
             if (!prevStat) {
@@ -58,8 +60,8 @@ class FrozenVideoTrackDetector extends BaseIssueDetector {
                 // DTX-like behavior detected, ignoring freezes check
                 return undefined;
             }
-            const deltaFreezeCount = videoStream.freezeCount - (prevStat.freezeCount ?? 0);
-            const deltaFreezesTimeMs = (videoStream.totalFreezesDuration - (prevStat.totalFreezesDuration ?? 0)) * 1000;
+            const deltaFreezeCount = videoStream.freezeCount - ((_a = prevStat.freezeCount) !== null && _a !== void 0 ? _a : 0);
+            const deltaFreezesTimeMs = (videoStream.totalFreezesDuration - ((_b = prevStat.totalFreezesDuration) !== null && _b !== void 0 ? _b : 0)) * 1000;
             const avgFreezeDurationMs = deltaFreezeCount > 0 ? deltaFreezesTimeMs / deltaFreezeCount : 0;
             const statsTimeDiff = videoStream.timestamp - prevStat.timestamp;
             const frozenDurationPct = (deltaFreezesTimeMs / statsTimeDiff) * 100;

@@ -31,9 +31,10 @@ class NetworkScoresCalculator {
         };
     }
     calculateOutboundScore(data) {
+        var _a, _b, _c, _d;
         const remoteInboundRTPStreamsStats = [
-            ...data.remote?.audio.inbound || [],
-            ...data.remote?.video.inbound || [],
+            ...((_a = data.remote) === null || _a === void 0 ? void 0 : _a.audio.inbound) || [],
+            ...((_b = data.remote) === null || _b === void 0 ? void 0 : _b.video.inbound) || [],
         ];
         if (!remoteInboundRTPStreamsStats.length) {
             return undefined;
@@ -43,8 +44,8 @@ class NetworkScoresCalculator {
             return undefined;
         }
         const previousRemoteInboundRTPStreamsStats = [
-            ...previousStats.remote?.audio.inbound || [],
-            ...previousStats.remote?.video.inbound || [],
+            ...((_c = previousStats.remote) === null || _c === void 0 ? void 0 : _c.audio.inbound) || [],
+            ...((_d = previousStats.remote) === null || _d === void 0 ? void 0 : _d.video.inbound) || [],
         ];
         const { packetsSent } = data.connection;
         const lastPacketsSent = previousStats.connection.packetsSent;
@@ -54,7 +55,7 @@ class NetworkScoresCalculator {
             return {
                 sumJitter: stats.sumJitter + currentStreamStats.jitter,
                 packetsLost: stats.packetsLost + currentStreamStats.packetsLost,
-                lastPacketsLost: stats.lastPacketsLost + (previousStreamStats?.packetsLost || 0),
+                lastPacketsLost: stats.lastPacketsLost + ((previousStreamStats === null || previousStreamStats === void 0 ? void 0 : previousStreamStats.packetsLost) || 0),
             };
         }, {
             sumJitter: 0,
@@ -76,7 +77,8 @@ class NetworkScoresCalculator {
         };
     }
     calculateInboundScore(data) {
-        const inboundRTPStreamsStats = [...data.audio?.inbound, ...data.video?.inbound];
+        var _a, _b, _c, _d;
+        const inboundRTPStreamsStats = [...(_a = data.audio) === null || _a === void 0 ? void 0 : _a.inbound, ...(_b = data.video) === null || _b === void 0 ? void 0 : _b.inbound];
         if (!inboundRTPStreamsStats.length) {
             return undefined;
         }
@@ -84,7 +86,7 @@ class NetworkScoresCalculator {
         if (!previousStats) {
             return undefined;
         }
-        const previousInboundStreamStats = [...previousStats.video?.inbound, ...previousStats.audio?.inbound];
+        const previousInboundStreamStats = [...(_c = previousStats.video) === null || _c === void 0 ? void 0 : _c.inbound, ...(_d = previousStats.audio) === null || _d === void 0 ? void 0 : _d.inbound];
         const { packetsReceived } = data.connection;
         const lastPacketsReceived = previousStats.connection.packetsReceived;
         const rtpNetworkStats = inboundRTPStreamsStats.reduce((stats, currentStreamStats) => {
@@ -92,7 +94,7 @@ class NetworkScoresCalculator {
             return {
                 sumJitter: stats.sumJitter + currentStreamStats.jitter,
                 packetsLost: stats.packetsLost + currentStreamStats.packetsLost,
-                lastPacketsLost: stats.lastPacketsLost + (previousStreamStats?.packetsLost || 0),
+                lastPacketsLost: stats.lastPacketsLost + ((previousStreamStats === null || previousStreamStats === void 0 ? void 0 : previousStreamStats.packetsLost) || 0),
             };
         }, {
             sumJitter: 0,

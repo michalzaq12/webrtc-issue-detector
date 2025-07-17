@@ -5,9 +5,10 @@ class QualityLimitationsIssueDetector extends BaseIssueDetector {
         return this.processData(data);
     }
     processData(data) {
+        var _a;
         const streamsWithLimitation = data.video.outbound.filter((stats) => stats.qualityLimitationReason !== 'none');
         const issues = [];
-        const previousOutboundRTPVideoStreamsStats = this.getLastProcessedStats(data.connection.id)?.video.outbound;
+        const previousOutboundRTPVideoStreamsStats = (_a = this.getLastProcessedStats(data.connection.id)) === null || _a === void 0 ? void 0 : _a.video.outbound;
         if (!previousOutboundRTPVideoStreamsStats) {
             return issues;
         }

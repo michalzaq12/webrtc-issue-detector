@@ -14,18 +14,19 @@ import { scheduleTask } from '../utils/tasks';
 import { CLEANUP_PREV_STATS_TTL_MS, MAX_PARSED_STATS_STORAGE_SIZE } from '../utils/constants';
 class BaseIssueDetector {
     constructor(params = {}) {
+        var _a, _b;
         _BaseIssueDetector_parsedStatsStorage.set(this, new Map());
         _BaseIssueDetector_statsCleanupDelayMs.set(this, void 0);
         _BaseIssueDetector_maxParsedStatsStorageSize.set(this, void 0);
-        __classPrivateFieldSet(this, _BaseIssueDetector_statsCleanupDelayMs, params.statsCleanupTtlMs ?? CLEANUP_PREV_STATS_TTL_MS, "f");
-        __classPrivateFieldSet(this, _BaseIssueDetector_maxParsedStatsStorageSize, params.maxParsedStatsStorageSize ?? MAX_PARSED_STATS_STORAGE_SIZE, "f");
+        __classPrivateFieldSet(this, _BaseIssueDetector_statsCleanupDelayMs, (_a = params.statsCleanupTtlMs) !== null && _a !== void 0 ? _a : CLEANUP_PREV_STATS_TTL_MS, "f");
+        __classPrivateFieldSet(this, _BaseIssueDetector_maxParsedStatsStorageSize, (_b = params.maxParsedStatsStorageSize) !== null && _b !== void 0 ? _b : MAX_PARSED_STATS_STORAGE_SIZE, "f");
     }
     detect(data, networkScores) {
         const parsedStatsWithNetworkScores = {
             ...data,
             networkScores: {
                 ...networkScores,
-                statsSamples: networkScores?.statsSamples || {},
+                statsSamples: (networkScores === null || networkScores === void 0 ? void 0 : networkScores.statsSamples) || {},
             },
         };
         const result = this.performDetection(parsedStatsWithNetworkScores);
@@ -52,10 +53,11 @@ class BaseIssueDetector {
         });
     }
     setLastProcessedStats(connectionId, parsedStats) {
+        var _a;
         if (!connectionId || parsedStats.connection.id !== connectionId) {
             return;
         }
-        const connectionStats = __classPrivateFieldGet(this, _BaseIssueDetector_parsedStatsStorage, "f").get(connectionId) ?? [];
+        const connectionStats = (_a = __classPrivateFieldGet(this, _BaseIssueDetector_parsedStatsStorage, "f").get(connectionId)) !== null && _a !== void 0 ? _a : [];
         connectionStats.push(parsedStats);
         if (connectionStats.length > __classPrivateFieldGet(this, _BaseIssueDetector_maxParsedStatsStorageSize, "f")) {
             connectionStats.shift();
@@ -64,10 +66,11 @@ class BaseIssueDetector {
     }
     getLastProcessedStats(connectionId) {
         const connectionStats = __classPrivateFieldGet(this, _BaseIssueDetector_parsedStatsStorage, "f").get(connectionId);
-        return connectionStats?.[connectionStats.length - 1];
+        return connectionStats === null || connectionStats === void 0 ? void 0 : connectionStats[connectionStats.length - 1];
     }
     getAllLastProcessedStats(connectionId) {
-        return __classPrivateFieldGet(this, _BaseIssueDetector_parsedStatsStorage, "f").get(connectionId) ?? [];
+        var _a;
+        return (_a = __classPrivateFieldGet(this, _BaseIssueDetector_parsedStatsStorage, "f").get(connectionId)) !== null && _a !== void 0 ? _a : [];
     }
     deleteLastProcessedStats(connectionId) {
         __classPrivateFieldGet(this, _BaseIssueDetector_parsedStatsStorage, "f").delete(connectionId);

@@ -18,13 +18,14 @@ import BaseIssueDetector from './BaseIssueDetector';
 const MIN_STATS_HISTORY_LENGTH = 5;
 class VideoDecoderIssueDetector extends BaseIssueDetector {
     constructor(params = {}) {
+        var _a, _b, _c;
         super(params);
         _VideoDecoderIssueDetector_volatilityThreshold.set(this, void 0);
         _VideoDecoderIssueDetector_affectedStreamsPercentThreshold.set(this, void 0);
         _VideoDecoderIssueDetector_minMosQuality.set(this, void 0);
-        __classPrivateFieldSet(this, _VideoDecoderIssueDetector_volatilityThreshold, params.volatilityThreshold ?? 8, "f");
-        __classPrivateFieldSet(this, _VideoDecoderIssueDetector_affectedStreamsPercentThreshold, params.affectedStreamsPercentThreshold ?? 30, "f");
-        __classPrivateFieldSet(this, _VideoDecoderIssueDetector_minMosQuality, params.minMosQuality ?? MosQuality.BAD, "f");
+        __classPrivateFieldSet(this, _VideoDecoderIssueDetector_volatilityThreshold, (_a = params.volatilityThreshold) !== null && _a !== void 0 ? _a : 8, "f");
+        __classPrivateFieldSet(this, _VideoDecoderIssueDetector_affectedStreamsPercentThreshold, (_b = params.affectedStreamsPercentThreshold) !== null && _b !== void 0 ? _b : 30, "f");
+        __classPrivateFieldSet(this, _VideoDecoderIssueDetector_minMosQuality, (_c = params.minMosQuality) !== null && _c !== void 0 ? _c : MosQuality.BAD, "f");
     }
     performDetection(data) {
         const allHistoricalStats = [
@@ -59,7 +60,7 @@ class VideoDecoderIssueDetector extends BaseIssueDetector {
             const allFps = [];
             for (let i = 0; i < allProcessedStats.length - 1; i += 1) {
                 const videoStreamStats = allProcessedStats[i].video.inbound.find((stream) => stream.ssrc === incomeVideoStream.ssrc);
-                if (videoStreamStats?.framesPerSecond !== undefined) {
+                if ((videoStreamStats === null || videoStreamStats === void 0 ? void 0 : videoStreamStats.framesPerSecond) !== undefined) {
                     allFps.push(videoStreamStats.framesPerSecond);
                 }
             }

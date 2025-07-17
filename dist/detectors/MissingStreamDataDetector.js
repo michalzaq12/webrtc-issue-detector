@@ -14,12 +14,13 @@ import { IssueReason, IssueType, } from '../types';
 import BaseIssueDetector from './BaseIssueDetector';
 export default class MissingStreamDataDetector extends BaseIssueDetector {
     constructor(params = {}) {
+        var _a, _b;
         super();
         _MissingStreamDataDetector_lastMarkedAt.set(this, new Map());
         _MissingStreamDataDetector_timeoutMs.set(this, void 0);
         _MissingStreamDataDetector_steps.set(this, void 0);
-        __classPrivateFieldSet(this, _MissingStreamDataDetector_timeoutMs, params.timeoutMs ?? 15000, "f");
-        __classPrivateFieldSet(this, _MissingStreamDataDetector_steps, params.steps ?? 3, "f");
+        __classPrivateFieldSet(this, _MissingStreamDataDetector_timeoutMs, (_a = params.timeoutMs) !== null && _a !== void 0 ? _a : 15000, "f");
+        __classPrivateFieldSet(this, _MissingStreamDataDetector_steps, (_b = params.steps) !== null && _b !== void 0 ? _b : 3, "f");
     }
     performDetection(data) {
         return this.processData(data);

@@ -14,17 +14,19 @@ import { IssueReason, IssueType, } from '../types';
 import BaseIssueDetector from './BaseIssueDetector';
 class NetworkMediaSyncIssueDetector extends BaseIssueDetector {
     constructor(params = {}) {
+        var _a;
         super();
         _NetworkMediaSyncIssueDetector_correctedSamplesThresholdPct.set(this, void 0);
-        __classPrivateFieldSet(this, _NetworkMediaSyncIssueDetector_correctedSamplesThresholdPct, params.correctedSamplesThresholdPct ?? 5, "f");
+        __classPrivateFieldSet(this, _NetworkMediaSyncIssueDetector_correctedSamplesThresholdPct, (_a = params.correctedSamplesThresholdPct) !== null && _a !== void 0 ? _a : 5, "f");
     }
     performDetection(data) {
         return this.processData(data);
     }
     processData(data) {
+        var _a;
         const inboundRTPAudioStreamsStats = data.audio.inbound;
         const issues = [];
-        const previousInboundRTPAudioStreamsStats = this.getLastProcessedStats(data.connection.id)?.audio.inbound;
+        const previousInboundRTPAudioStreamsStats = (_a = this.getLastProcessedStats(data.connection.id)) === null || _a === void 0 ? void 0 : _a.audio.inbound;
         if (!previousInboundRTPAudioStreamsStats) {
             return issues;
         }

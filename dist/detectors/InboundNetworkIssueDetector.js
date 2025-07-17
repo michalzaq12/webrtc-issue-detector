@@ -14,22 +14,24 @@ import { IssueReason, IssueType, } from '../types';
 import BaseIssueDetector from './BaseIssueDetector';
 class InboundNetworkIssueDetector extends BaseIssueDetector {
     constructor(params = {}) {
+        var _a, _b, _c, _d;
         super();
         _InboundNetworkIssueDetector_highPacketLossThresholdPct.set(this, void 0);
         _InboundNetworkIssueDetector_highJitterThreshold.set(this, void 0);
         _InboundNetworkIssueDetector_highJitterBufferDelayThresholdMs.set(this, void 0);
         _InboundNetworkIssueDetector_highRttThresholdMs.set(this, void 0);
-        __classPrivateFieldSet(this, _InboundNetworkIssueDetector_highPacketLossThresholdPct, params.highPacketLossThresholdPct ?? 5, "f");
-        __classPrivateFieldSet(this, _InboundNetworkIssueDetector_highJitterThreshold, params.highJitterThreshold ?? 200, "f");
-        __classPrivateFieldSet(this, _InboundNetworkIssueDetector_highJitterBufferDelayThresholdMs, params.highJitterBufferDelayThresholdMs ?? 500, "f");
-        __classPrivateFieldSet(this, _InboundNetworkIssueDetector_highRttThresholdMs, params.highRttThresholdMs ?? 250, "f");
+        __classPrivateFieldSet(this, _InboundNetworkIssueDetector_highPacketLossThresholdPct, (_a = params.highPacketLossThresholdPct) !== null && _a !== void 0 ? _a : 5, "f");
+        __classPrivateFieldSet(this, _InboundNetworkIssueDetector_highJitterThreshold, (_b = params.highJitterThreshold) !== null && _b !== void 0 ? _b : 200, "f");
+        __classPrivateFieldSet(this, _InboundNetworkIssueDetector_highJitterBufferDelayThresholdMs, (_c = params.highJitterBufferDelayThresholdMs) !== null && _c !== void 0 ? _c : 500, "f");
+        __classPrivateFieldSet(this, _InboundNetworkIssueDetector_highRttThresholdMs, (_d = params.highRttThresholdMs) !== null && _d !== void 0 ? _d : 250, "f");
     }
     performDetection(data) {
         return this.processData(data);
     }
     processData(data) {
+        var _a, _b, _c, _d;
         const issues = [];
-        const inboundRTPStreamsStats = [...data.audio?.inbound, ...data.video?.inbound];
+        const inboundRTPStreamsStats = [...(_a = data.audio) === null || _a === void 0 ? void 0 : _a.inbound, ...(_b = data.video) === null || _b === void 0 ? void 0 : _b.inbound];
         if (!inboundRTPStreamsStats.length) {
             return issues;
         }
@@ -37,13 +39,13 @@ class InboundNetworkIssueDetector extends BaseIssueDetector {
         if (!previousStats) {
             return issues;
         }
-        const previousInboundStreamStats = [...previousStats.video?.inbound, ...previousStats.audio?.inbound];
+        const previousInboundStreamStats = [...(_c = previousStats.video) === null || _c === void 0 ? void 0 : _c.inbound, ...(_d = previousStats.audio) === null || _d === void 0 ? void 0 : _d.inbound];
         const { packetsReceived } = data.connection;
         const lastPacketsReceived = previousStats.connection.packetsReceived;
         const rtpNetworkStats = inboundRTPStreamsStats.reduce((stats, currentStreamStats) => {
             const previousStreamStats = previousInboundStreamStats.find((stream) => stream.ssrc === currentStreamStats.ssrc);
-            const lastJitterBufferDelay = previousStreamStats?.jitterBufferDelay || 0;
-            const lastJitterBufferEmittedCount = previousStreamStats?.jitterBufferEmittedCount || 0;
+            const lastJitterBufferDelay = (previousStreamStats === null || previousStreamStats === void 0 ? void 0 : previousStreamStats.jitterBufferDelay) || 0;
+            const lastJitterBufferEmittedCount = (previousStreamStats === null || previousStreamStats === void 0 ? void 0 : previousStreamStats.jitterBufferEmittedCount) || 0;
             const delay = currentStreamStats.jitterBufferDelay - lastJitterBufferDelay;
             const emitted = currentStreamStats.jitterBufferEmittedCount - lastJitterBufferEmittedCount;
             const jitterBufferDelayMs = delay && emitted ? (1e3 * delay) / emitted : 0;
@@ -51,7 +53,7 @@ class InboundNetworkIssueDetector extends BaseIssueDetector {
                 sumJitter: stats.sumJitter + currentStreamStats.jitter,
                 sumJitterBufferDelayMs: stats.sumJitterBufferDelayMs + jitterBufferDelayMs,
                 packetsLost: stats.packetsLost + currentStreamStats.packetsLost,
-                lastPacketsLost: stats.lastPacketsLost + (previousStreamStats?.packetsLost || 0),
+                lastPacketsLost: stats.lastPacketsLost + ((previousStreamStats === null || previousStreamStats === void 0 ? void 0 : previousStreamStats.packetsLost) || 0),
             };
         }, {
             sumJitter: 0,

@@ -14,20 +14,22 @@ import { IssueReason, IssueType, } from '../types';
 import BaseIssueDetector from './BaseIssueDetector';
 class OutboundNetworkIssueDetector extends BaseIssueDetector {
     constructor(params = {}) {
+        var _a, _b;
         super();
         _OutboundNetworkIssueDetector_highPacketLossThresholdPct.set(this, void 0);
         _OutboundNetworkIssueDetector_highJitterThreshold.set(this, void 0);
-        __classPrivateFieldSet(this, _OutboundNetworkIssueDetector_highPacketLossThresholdPct, params.highPacketLossThresholdPct ?? 5, "f");
-        __classPrivateFieldSet(this, _OutboundNetworkIssueDetector_highJitterThreshold, params.highJitterThreshold ?? 200, "f");
+        __classPrivateFieldSet(this, _OutboundNetworkIssueDetector_highPacketLossThresholdPct, (_a = params.highPacketLossThresholdPct) !== null && _a !== void 0 ? _a : 5, "f");
+        __classPrivateFieldSet(this, _OutboundNetworkIssueDetector_highJitterThreshold, (_b = params.highJitterThreshold) !== null && _b !== void 0 ? _b : 200, "f");
     }
     performDetection(data) {
         return this.processData(data);
     }
     processData(data) {
+        var _a, _b, _c, _d;
         const issues = [];
         const remoteInboundRTPStreamsStats = [
-            ...data.remote?.audio.inbound || [],
-            ...data.remote?.video.inbound || [],
+            ...((_a = data.remote) === null || _a === void 0 ? void 0 : _a.audio.inbound) || [],
+            ...((_b = data.remote) === null || _b === void 0 ? void 0 : _b.video.inbound) || [],
         ];
         if (!remoteInboundRTPStreamsStats.length) {
             return issues;
@@ -37,8 +39,8 @@ class OutboundNetworkIssueDetector extends BaseIssueDetector {
             return issues;
         }
         const previousRemoteInboundRTPStreamsStats = [
-            ...previousStats.remote?.audio.inbound || [],
-            ...previousStats.remote?.video.inbound || [],
+            ...((_c = previousStats.remote) === null || _c === void 0 ? void 0 : _c.audio.inbound) || [],
+            ...((_d = previousStats.remote) === null || _d === void 0 ? void 0 : _d.video.inbound) || [],
         ];
         const { packetsSent } = data.connection;
         const lastPacketsSent = previousStats.connection.packetsSent;
@@ -48,7 +50,7 @@ class OutboundNetworkIssueDetector extends BaseIssueDetector {
             return {
                 sumJitter: stats.sumJitter + currentStreamStats.jitter,
                 packetsLost: stats.packetsLost + currentStreamStats.packetsLost,
-                lastPacketsLost: stats.lastPacketsLost + (previousStreamStats?.packetsLost || 0),
+                lastPacketsLost: stats.lastPacketsLost + ((previousStreamStats === null || previousStreamStats === void 0 ? void 0 : previousStreamStats.packetsLost) || 0),
             };
         }, {
             sumJitter: 0,
