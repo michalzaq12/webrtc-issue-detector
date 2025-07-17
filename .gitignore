@@ -60,10 +60,4 @@ typings/
 # next.js build output
 .next
 
-# Typescript build
-dist/
-
-# Package lock file
-package-lock.json
-
 .idea
